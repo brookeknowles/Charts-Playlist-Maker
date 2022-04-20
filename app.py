@@ -17,7 +17,7 @@ def login():
     return redirect(auth_url)
 
 @app.route('/redirect')
-def redirectPage():
+def redirect_page():
     sp_oauth = create_spotify_oauth()
     session.clear()
     code = request.args.get('code')
@@ -42,6 +42,10 @@ def create():
                             public=True,
                             collaborative=False,
                             description="test playlist created with Spotipy")
+
+    # add songs from hot 100 to the playlist.
+    # maybe make a file that holds all the functions unrelated to endpoints
+
     return "created playlist"
 
 
@@ -60,7 +64,7 @@ def get_token():
     is_expired = token_info['expires_at'] - now < 60
 
     # refresh token if it has expired
-    if (is_expired):
+    if is_expired:
         sp_oauth = create_spotify_oauth()
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
 
@@ -73,7 +77,7 @@ def create_spotify_oauth():
     return SpotifyOAuth(
         client_id=client_secrets.return_client_id(),
         client_secret=client_secrets.return_client_secret(),
-        redirect_uri=url_for('redirectPage', _external=True),
+        redirect_uri=url_for('redirect_page', _external=True),
         scope="playlist-modify-public"
     )
 
