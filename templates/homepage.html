@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Music Charts App</title>
+</head>
+<body>
+    <h2>Create a playlist!</h2>
+</body>
+<div>
+    <form method="POST">
+
+<label for="chart">Chart:</label><br>
+  <select name="chart" id="chart">
+    <option value="NZ">NZ Top 40</option>
+    <option value="US">Billboard Hot 100</option>
+  </select><br><br>
+
+  <label for="playlist_name">Playlist Name:</label><br>
+  <input type="text" id="playlist_name" name="playlist_name"><br>
+  <label for="playlist_description">Playlist Description:</label><br>
+  <textarea cols="20" rows="3" id="playlist_description" name="playlist_description"></textarea><br><br>
+
+  <input type="submit" value="Create Playlist">
+</form>
+</div>
+</html>

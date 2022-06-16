@@ -1,6 +1,6 @@
 import time
 
-from flask import Flask, request, url_for, session, redirect
+from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import client_secrets
@@ -31,13 +31,20 @@ def redirect_page():
     return redirect(url_for('home', _external=True))
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def home():
-    return 'Homepage!'
+    if request.method == 'POST':
+        playlist_name = request.form['playlist_name'].strip()
+        playlist_description = request.form['playlist_description'].strip()
+        chart = request.form['chart'].strip()
+        create(chart, playlist_name, playlist_description)
+        return "Success"
+    else:
+        return render_template('homepage.html')
 
 
 @app.route('/create')
-def create():
+def create(chart, playlist_name, playlist_description):
     """ creates new spotify playlist for user currently logged in """
     try:
         session['token_info'], authorized = get_token()
@@ -48,15 +55,15 @@ def create():
 
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     playlist = sp.user_playlist_create(user=sp.me()['id'],
-                            name="testPlaylist",        # change so user can enter the details they want
+                            name=playlist_name,        # change so user can enter the details they want
                             public=True,
                             collaborative=False,
-                            description="test playlist created with Spotipy")
+                            description=playlist_description)
 
     global playlist_id
     playlist_id = playlist['id']
 
-    add_songs_to_playlist(get_uri_from_spotify("US"))  # TODO: change to variable that allows user to choose which chart
+    add_songs_to_playlist(get_uri_from_spotify(chart))  # TODO: change to variable that allows user to choose which chart
 
     return "created playlist"
 
