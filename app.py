@@ -1,8 +1,11 @@
 import time
+
+import requests
 from flask import Flask, request, url_for, session, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import client_secrets
+from main import get_NZ_top_40
 
 app = Flask(__name__)
 
@@ -81,3 +84,39 @@ def create_spotify_oauth():
         scope="playlist-modify-public"
     )
 
+# @app.route('/URIS')
+def get_uri_from_spotify():
+    """ gets a list of URIs from spotify based off the chart data returned from the get_NZ_top_40()
+     or get_billboard_hot_100() functions.
+
+     TODO: - edit so theres some kind of input that says whether its nztop40 of bbh100 data that we getting
+            - Tested this works ok with @app.route('/URIS') & print statements.
+            - need to call this from another function to use"""
+
+    chart_data = get_NZ_top_40()
+
+    try:
+        session['token_info'], authorized = get_token()
+        session.modified = True
+    except:
+        print("user not logged in")
+        return redirect('/')
+
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    num_chart_entries = 40      # 40 for NZT40, 100 for BBH100 etc
+
+    artists_list = []
+    for i in range(num_chart_entries):
+        artists_list.append(chart_data[i]['Artist'])
+
+    songs_list = []
+    for i in range(num_chart_entries):
+        songs_list.append(chart_data[i]['Track'])
+
+    uris_list = []
+    for i in range(num_chart_entries):
+        search_info = sp.search(q='artist:' + artists_list[i] + ' track:' + songs_list[i], type='track')
+        track_uri = search_info["tracks"]["items"][0]["uri"]
+        uris_list.append(track_uri)
+
+    return uris_list

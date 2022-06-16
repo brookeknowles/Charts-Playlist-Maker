@@ -23,8 +23,8 @@ def get_billboard_hot_100():
         "4) > ul > li:nth-child(1) span")]
     position_list = [i for i in range(1, 100 + 1)]
 
-    chart_data = json.dumps([{'Position': positions, 'Artist': artists, 'Track': songs} for positions, artists, songs in
-                             zip(position_list, artist_list, song_list)])
+    chart_data = [{'Position': positions, 'Artist': artists, 'Track': songs} for positions, artists, songs in
+                             zip(position_list, artist_list, song_list)]
 
     return chart_data
 
@@ -48,8 +48,8 @@ def get_NZ_top_40():
 
     position_list = [i for i in range(1, 100 + 1)]
 
-    chart_data = json.dumps([{'Position': positions, 'Artist': artists, 'Track': songs} for positions, artists, songs in
-                             zip(position_list, artist_list, song_list)])
+    chart_data = [{'Position': positions, 'Artist': artists, 'Track': songs} for positions, artists, songs in
+                             zip(position_list, artist_list, song_list)]
 
     return chart_data
 
@@ -63,6 +63,3 @@ def strip_punctuation(input_str):
             else:
                 input_str = input_str.replace(element, "")
     return input_str
-
-
-print(get_NZ_top_40())
