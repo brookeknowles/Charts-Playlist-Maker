@@ -1,11 +1,10 @@
 import time
 
-import requests
 from flask import Flask, request, url_for, session, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import client_secrets
-from main import get_NZ_top_40
+from main import get_NZ_top_40, get_billboard_hot_100
 
 app = Flask(__name__)
 
@@ -51,7 +50,7 @@ def create():
     global playlist_id
     playlist_id = playlist['id']
 
-    add_songs_to_playlist(get_uri_from_spotify())
+    add_songs_to_playlist(get_uri_from_spotify("US"))  # TODO: change to variable that allows user to choose which chart
 
     return "created playlist"
 
@@ -89,13 +88,9 @@ def create_spotify_oauth():
     )
 
 
-def get_uri_from_spotify():
+def get_uri_from_spotify(selected_chart):
     """ gets a list of URIs from spotify based off the chart data returned from the get_NZ_top_40()
-     or get_billboard_hot_100() functions.
-
-     TODO: - edit so theres some kind of input that says whether its nztop40 of bbh100 data that we getting"""
-
-    chart_data = get_NZ_top_40()
+     or get_billboard_hot_100() functions. """
 
     try:
         session['token_info'], authorized = get_token()
@@ -105,7 +100,13 @@ def get_uri_from_spotify():
         return redirect('/')
 
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-    num_chart_entries = 40      # 40 for NZT40, 100 for BBH100 etc
+
+    if selected_chart == "NZ":
+        num_chart_entries = 40
+        chart_data = get_NZ_top_40()
+    else:    # will be BBH100, need to change later to catch error for incorrect input but this works for now
+        num_chart_entries = 100
+        chart_data = get_billboard_hot_100()
 
     artists_list = []
     for i in range(num_chart_entries):

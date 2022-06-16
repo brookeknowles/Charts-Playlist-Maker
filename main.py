@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-import json
-import re
 
 
 def get_billboard_hot_100():
