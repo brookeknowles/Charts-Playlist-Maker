@@ -12,6 +12,8 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 TOKEN_INFO = "token_info"
 
+global playlist_id
+
 # setup endpoints
 @app.route('/')
 def login():
@@ -40,14 +42,16 @@ def create():
         return redirect('/')
 
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-    sp.user_playlist_create(user=sp.me()['id'],
+    playlist = sp.user_playlist_create(user=sp.me()['id'],
                             name="testPlaylist",        # change so user can enter the details they want
                             public=True,
                             collaborative=False,
                             description="test playlist created with Spotipy")
 
-    # add songs from hot 100 to the playlist.
-    # maybe make a file that holds all the functions unrelated to endpoints
+    global playlist_id
+    playlist_id = playlist['id']
+
+    add_songs_to_playlist(get_uri_from_spotify())
 
     return "created playlist"
 
@@ -84,14 +88,12 @@ def create_spotify_oauth():
         scope="playlist-modify-public"
     )
 
-# @app.route('/URIS')
+
 def get_uri_from_spotify():
     """ gets a list of URIs from spotify based off the chart data returned from the get_NZ_top_40()
      or get_billboard_hot_100() functions.
 
-     TODO: - edit so theres some kind of input that says whether its nztop40 of bbh100 data that we getting
-            - Tested this works ok with @app.route('/URIS') & print statements.
-            - need to call this from another function to use"""
+     TODO: - edit so theres some kind of input that says whether its nztop40 of bbh100 data that we getting"""
 
     chart_data = get_NZ_top_40()
 
@@ -120,3 +122,8 @@ def get_uri_from_spotify():
         uris_list.append(track_uri)
 
     return uris_list
+
+def add_songs_to_playlist(uris_list):
+    """ adds the songs from the charts to the playlist that was created """
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    sp.playlist_add_items(playlist_id=playlist_id, items=uris_list, position=None)
