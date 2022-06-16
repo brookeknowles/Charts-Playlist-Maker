@@ -13,12 +13,13 @@ TOKEN_INFO = "token_info"
 
 global playlist_id
 
-# setup endpoints
+
 @app.route('/')
 def login():
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
+
 
 @app.route('/redirect')
 def redirect_page():
@@ -27,7 +28,12 @@ def redirect_page():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session[TOKEN_INFO] = token_info
-    return redirect(url_for('create', _external=True))
+    return redirect(url_for('home', _external=True))
+
+
+@app.route('/home')
+def home():
+    return 'Homepage!'
 
 
 @app.route('/create')
@@ -124,7 +130,9 @@ def get_uri_from_spotify(selected_chart):
 
     return uris_list
 
+
 def add_songs_to_playlist(uris_list):
     """ adds the songs from the charts to the playlist that was created """
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     sp.playlist_add_items(playlist_id=playlist_id, items=uris_list, position=None)
+
