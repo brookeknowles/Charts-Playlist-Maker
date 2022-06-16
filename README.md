@@ -1,6 +1,6 @@
 # music-charts
 
-This app scrapes music chart data from the NZ Top 40 and the Billboard Hot 100, which can be then used to create spotify playlists of the top charting songs. 
+This web app scrapes music chart data from the NZ Top 40 and the Billboard Hot 100, which can be then used to create spotify playlists of the top charting songs. 
 
 ### To Run App:
 Install dependencies:
@@ -23,6 +23,5 @@ Run App (from terminal):
 
 ### To do:
 - Make a script that downloads all the dependencies easy
-- Create front end that user can interact with
-  - Allow user to choose a playlist name + description (but have a default as just "NZ Top 40 week dated dd/mm/yy" or something)
-  - Allow user to upload a playlist cover art
+- allow user to upload a playlist cover art
+- make the form have default values

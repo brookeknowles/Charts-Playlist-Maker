@@ -43,9 +43,8 @@ def home():
         return render_template('homepage.html')
 
 
-@app.route('/create')
 def create(chart, playlist_name, playlist_description):
-    """ creates new spotify playlist for user currently logged in """
+    """ creates new spotify playlist for user currently logged in, based on their choices from the form on homepage """
     try:
         session['token_info'], authorized = get_token()
         session.modified = True
@@ -55,7 +54,7 @@ def create(chart, playlist_name, playlist_description):
 
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     playlist = sp.user_playlist_create(user=sp.me()['id'],
-                            name=playlist_name,        # change so user can enter the details they want
+                            name=playlist_name,
                             public=True,
                             collaborative=False,
                             description=playlist_description)
@@ -63,7 +62,7 @@ def create(chart, playlist_name, playlist_description):
     global playlist_id
     playlist_id = playlist['id']
 
-    add_songs_to_playlist(get_uri_from_spotify(chart))  # TODO: change to variable that allows user to choose which chart
+    add_songs_to_playlist(get_uri_from_spotify(chart))
 
     return "created playlist"
 
