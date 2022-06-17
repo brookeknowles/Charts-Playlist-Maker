@@ -74,6 +74,7 @@ def create(chart, playlist_name, playlist_description):
     return "created playlist"
 
 def make_embedded_url(url):
+    """ This function turns the URL of the created playlist into the format used for embedding a playlist """
     split_string_tuple = url.partition(".com/")
     embedded = split_string_tuple[0] + split_string_tuple[1] + "embed/" + split_string_tuple[2] + "?utm_source=generator"
     return embedded
