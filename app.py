@@ -12,6 +12,8 @@ app.config.from_pyfile('config.py')
 TOKEN_INFO = "token_info"
 
 global playlist_id
+global embedded_playlist_url
+global playlist_url
 
 
 @app.route('/')
@@ -38,7 +40,7 @@ def home():
         playlist_description = request.form['playlist_description'].strip()
         chart = request.form['chart'].strip()
         create(chart, playlist_name, playlist_description)
-        return "Success"
+        return render_template('created.html', value=embedded_playlist_url)
     else:
         return render_template('homepage.html')
 
@@ -54,10 +56,15 @@ def create(chart, playlist_name, playlist_description):
 
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     playlist = sp.user_playlist_create(user=sp.me()['id'],
-                            name=playlist_name,
-                            public=True,
-                            collaborative=False,
-                            description=playlist_description)
+                                       name=playlist_name,
+                                       public=True,
+                                       collaborative=False,
+                                       description=playlist_description)
+
+    global playlist_url
+    playlist_url = playlist['external_urls']['spotify']
+    global embedded_playlist_url
+    embedded_playlist_url = make_embedded_url(playlist_url)
 
     global playlist_id
     playlist_id = playlist['id']
@@ -66,6 +73,10 @@ def create(chart, playlist_name, playlist_description):
 
     return "created playlist"
 
+def make_embedded_url(url):
+    split_string_tuple = url.partition(".com/")
+    embedded = split_string_tuple[0] + split_string_tuple[1] + "embed/" + split_string_tuple[2] + "?utm_source=generator"
+    return embedded
 
 def get_token():
     """ checks to see if token is valid and gets a new token if not """
@@ -116,7 +127,7 @@ def get_uri_from_spotify(selected_chart):
     if selected_chart == "NZ":
         num_chart_entries = 40
         chart_data = get_NZ_top_40()
-    else:    # will be BBH100, need to change later to catch error for incorrect input but this works for now
+    else:  # will be BBH100, need to change later to catch error for incorrect input but this works for now
         num_chart_entries = 100
         chart_data = get_billboard_hot_100()
 
@@ -141,4 +152,3 @@ def add_songs_to_playlist(uris_list):
     """ adds the songs from the charts to the playlist that was created """
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     sp.playlist_add_items(playlist_id=playlist_id, items=uris_list, position=None)
-
