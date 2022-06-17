@@ -3,7 +3,7 @@ import requests
 
 
 def get_billboard_hot_100():
-    """ Gets the data from the Billboard Hot 100 website, and then creates a JSON object with all the relevant
+    """ Gets the data from the Billboard Hot 100 website, and then returns an object with all the relevant
     information """
 
     url = "https://www.billboard.com/charts/hot-100/"
@@ -27,7 +27,7 @@ def get_billboard_hot_100():
     return chart_data
 
 def get_NZ_top_40():
-    """ Gets the data from the NZTop40 website, and then creates a JSON object with all the relevant
+    """ Gets the data from the NZTop40 website, and then returns an object with all the relevant
         information """
 
     url = "https://nztop40.co.nz/chart/singles"
@@ -52,7 +52,7 @@ def get_NZ_top_40():
     return chart_data
 
 def strip_punctuation(input_str):
-    """ Spotify doesn't like special characters so best to remove punctuation """
+    """ Strips text of its punctuation as Spotify does not recognise it when searching """
     punctuation = '''{};:'"\,<>/@#$%^&*_~'''
     for element in input_str:
         if element in punctuation:
