@@ -4,7 +4,7 @@ from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import client_secrets
-from main import get_NZ_top_40, get_billboard_hot_100
+from main import get_NZ_top_40, get_billboard_hot_100, get_aria_top_50
 
 app = Flask(__name__)
 
@@ -128,6 +128,9 @@ def get_uri_from_spotify(selected_chart):
     if selected_chart == "NZ":
         num_chart_entries = 40
         chart_data = get_NZ_top_40()
+    elif selected_chart == "AU":
+        num_chart_entries = 50
+        chart_data = get_aria_top_50()
     else:  # will be BBH100, need to change later to catch error for incorrect input but this works for now
         num_chart_entries = 100
         chart_data = get_billboard_hot_100()
