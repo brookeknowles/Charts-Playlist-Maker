@@ -1,27 +1,51 @@
-# music-charts
+# Charts-Playlist-Maker
 
-This web app scrapes music chart data from the NZ Top 40 and the Billboard Hot 100, which can be then used to create spotify playlists of the top charting songs. 
+This web app scrapes data from various music charts around the world (NZ, Australia, USA), which is then used to create Spotify playlists of the top charting songs. 
 
-### To Run App:
-Install dependencies:
-- pip install beautifulsoup4
-- pip install requests
-- flask
-- spotipy
+## To Run App:
+### Install dependencies:
+    
+Run on terminal:
 
-Get Spotify Client Secrets
-- Create a spotify developer account
+> pip3 install -r requirements.txt
+
+### Get Spotify Client Secrets
+- Create a [Spotify developer account](https://developer.spotify.com/)
 - Create new application on https://developer.spotify.com/dashboard/applications
 - Make note of your Client ID and Client Secret
 - [The Spotify developer website has a good tutorial on this](https://developer.spotify.com/documentation/general/guides/authorization/app-settings/)
 
-Run App (from terminal):
+### Run App:
 
+Using your Client ID and Client Secret from the previous step, set your variables in the terminal:
+> export SPOTIFY_CLIENT_ID='{Your client ID}'
+
+> export SPOTIFY_CLIENT_SECRET='{Your client secret}'
+
+(note: 'export' should only be used for Mac or Linux machines. In Windows, replace 'export' with 'set')
+
+Then, run the app:
 > set FLASK_APP=app
 > 
 > flask run
 
-### To do:
-- Make a script that downloads all the dependencies easy
-- allow user to upload a playlist cover art
-- make the form have default values
+## How It Works:
+The first time the application is run, you will be taken to login with your Spotify account:
+
+![Screenshot](/screenshots/LoginScreen.png)
+
+Once logged in, you will see the homepage:
+
+![Screenshot](/screenshots/HomePage.png)
+
+Here, you can select which chart you want to create a playlist from:
+
+![Screenshot](/screenshots/SelectChart.png)
+
+Then enter a name and description for your playlist and submit:
+
+![Screenshot](/screenshots/SubmitDetails.png)
+
+Finally, a playlist will be created on your Spotify account, and the link to it will be embedded onto the web page for easy access
+
+![Screenshot](/screenshots/CreatedPlaylistScreen.png)
