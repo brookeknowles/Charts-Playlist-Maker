@@ -42,7 +42,7 @@ def home():
         create(chart, playlist_name, playlist_description)
         return render_template('created.html', value=embedded_playlist_url)
     else:
-        return render_template('homepage.html')
+        return render_template('index.html')
 
 
 def create(chart, playlist_name, playlist_description):
