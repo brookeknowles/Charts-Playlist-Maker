@@ -26,6 +26,7 @@ def get_billboard_hot_100():
 
     return chart_data
 
+
 def get_NZ_top_40():
     """ Gets the data from the NZTop40 website, and then returns an object with all the relevant
         information """
@@ -50,6 +51,7 @@ def get_NZ_top_40():
                              zip(position_list, artist_list, song_list)]
 
     return chart_data
+
 
 def get_aria_top_50():
     """ Gets the data from the ARIA top 50 singles website, and then returns an object with all the relevant
@@ -87,3 +89,4 @@ def strip_punctuation(input_str):
             else:
                 input_str = input_str.replace(element, "")
     return input_str
+
