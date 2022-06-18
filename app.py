@@ -3,7 +3,7 @@ import time
 from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-import client_secrets
+from config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 from main import get_NZ_top_40, get_billboard_hot_100, get_aria_top_50
 
 app = Flask(__name__)
@@ -105,8 +105,8 @@ def get_token():
 def create_spotify_oauth():
     """ creates a SpotifyOAuth object that can be used to authenticate requests """
     return SpotifyOAuth(
-        client_id=client_secrets.return_client_id(),
-        client_secret=client_secrets.return_client_secret(),
+        client_id=SPOTIFY_CLIENT_ID,
+        client_secret=SPOTIFY_CLIENT_SECRET,
         redirect_uri=url_for('redirect_page', _external=True),
         scope="playlist-modify-public"
     )
