@@ -7,7 +7,7 @@ This web app scrapes data from various music charts around the world (NZ, Austra
     
 Run on terminal:
 
-> pip3 install -r requirements.txt
+`pip3 install -r requirements.txt`
 
 ### Get Spotify Client Secrets
 - Create a [Spotify developer account](https://developer.spotify.com/)
@@ -18,16 +18,17 @@ Run on terminal:
 ### Run App:
 
 Using your Client ID and Client Secret from the previous step, set your variables in the terminal:
-> export SPOTIFY_CLIENT_ID='{Your client ID}'
+`export SPOTIFY_CLIENT_ID='{Your client ID}'`
 
-> export SPOTIFY_CLIENT_SECRET='{Your client secret}'
+`export SPOTIFY_CLIENT_SECRET='{Your client secret}'`
 
 (note: 'export' should only be used for Mac or Linux machines. In Windows, replace 'export' with 'set')
 
 Then, run the app:
-> set FLASK_APP=app
-> 
-> flask run
+
+`set FLASK_APP=app`
+
+`flask run`
 
 ## How It Works:
 The first time the application is run, you will be taken to login with your Spotify account:
